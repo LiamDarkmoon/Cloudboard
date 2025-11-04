@@ -1,9 +1,10 @@
 <aside>
   <nav>
     <ul>
-      <li><a href="/">Profile</a></li>
-      <li><a href="/about">Analytics</a></li>
-      <li><a href="/contact">domains</a></li>
+      <li><a href="/">Dashoard</a></li>
+      <li><a href="/profile{id}">Profile</a></li>
+      <li><a href="/analytics">Analytics</a></li>
+      <li><a href="/domains">Domains</a></li>
     </ul>
   </nav>
 </aside>
@@ -36,5 +37,11 @@
     border-bottom: var(--main-accent-color-hover) 1px solid;
     color: var(--main-accent-color-hover);
     background-color: var(--main-divider-color);
+  }
+
+  @media (max-width: 680px) {
+    aside {
+      display: none;
+    }
   }
 </style>

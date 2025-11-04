@@ -31,11 +31,9 @@ import Main from "./Main.astro";
 		background-color: var(--main-accent-color);
 		color: var(--main-bg-color);
     border: none;
-    padding: 15px 32px;
+    padding: 16px 32px;
     text-align: center;
-    text-decoration: none;
     display: inline-block;
-    font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
@@ -79,8 +77,13 @@ import Main from "./Main.astro";
 	.layout {
 	  display: grid;
 		grid-template-columns: 250px repeat(2, 1fr);
-		grid-template-rows: 100px repeat(2, 1fr) 100px;
+		grid-template-rows: 100px 1fr 100px;
 		grid-gap: 10px;
 		padding: 5px 10px 0 10px;
+	}
+
+	@media (max-width: 680px) {
+		.layout {
+			grid-template-columns: 1fr;
 	}
 </style>
