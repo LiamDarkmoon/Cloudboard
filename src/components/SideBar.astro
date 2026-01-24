@@ -1,7 +1,7 @@
 <aside>
   <nav>
     <ul>
-      <li><a href="/">Dashoard</a></li>
+      <li><a href="/dashboard">Dashoard</a></li>
       <li><a href="/profile{id}">Profile</a></li>
       <li><a href="/analytics">Analytics</a></li>
       <li><a href="/domains">Domains</a></li>
@@ -12,11 +12,11 @@
 <style>
   aside {
     grid-column: 1;
-    grid-row: 2 / 4;
+    grid-row: 2 / 3;
     border: 1px solid var(--main-divider-color);
     border-radius: 10px;
     padding: 20px;
-    width: 200px;
+    width: 250px;
   }
 
   nav ul {
@@ -36,7 +36,7 @@
   nav ul li:hover {
     border-bottom: var(--main-accent-color-hover) 1px solid;
     color: var(--main-accent-color-hover);
-    background-color: var(--main-divider-color);
+    cursor: pointer;
   }
 
   @media (max-width: 680px) {

@@ -1,5 +1,12 @@
+---
+import { actions } from "astro:actions";
+
+const token = Astro.cookies.get("auth")?.value;
+console.log("HeaderNav token:", token ? "Present" : "Not present");
+---
+
 <header>
-  <nav>
+  <nav class="sm:px-6">
     <div class="flex flex-col justify-center items-center">
       <a class="text-main-text decoration-0 text-3xl font-black transition-all duration-300 hover:scale-110 hover:text-main-accent-active"
       href="/">
@@ -10,10 +17,18 @@
       </span>
     </div>
     <ul>
-      <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active"><a href="/docs">Docs</a></li>
-      <button class="cta_bttn transition-all duration-300">
-        <a href="/login">Login</a>
-      </button>
+      <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active hidden md:block"><a href="/docs">Docs</a></li>
+      <form action={token ? actions.logout : null} method="POST">
+        <input type="hidden" name="logout" value="/" />
+        <button class="cta_bttn transition-all duration-300" type="submit">
+          <a href={token ? "/" : "/login"}>
+            {token ? 
+              "Logout" : 
+              "Login"
+            }
+          </a>
+        </button>
+      </form>
     </nav>
     </ul>
 </header>
@@ -36,7 +51,6 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 24px;
   }
 
   nav ul {

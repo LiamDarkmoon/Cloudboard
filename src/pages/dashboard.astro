@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Table from '../components/Table.tsx';
+
+const token = Astro.cookies.get("auth")?.value;
+console.log("Dashboard token:", token ? "Present" : "Not present");
+
+if (!token) {
+  return Astro.redirect("/login");
+}
+---
+
+<Layout>
+  <section class="pt-3 sm:p-0">
+
+    <h1 class="text-3xl font-extrabold">¡Your board!</h1>
+    <p class="italic text-secondary-text">Check the metrics of your websites</p>
+
+    <Table client:visible token={token}/>
+
+  </section>
+</Layout>
+
+<style>
+
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+</style>
