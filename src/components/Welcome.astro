@@ -1,16 +1,22 @@
 ---
+import Table from "./Table";
 ---
 
 <section id="hero" class="p-2 md:p-4">
 	<h1 class="text-2xl sm:text-3xl md:text-4xl font-bold">¡Welcome to Cloudboard!</h1>
 	<h2 class="sm:text-l md:text-xl text-balance">To get started, paste our Tracker.js in your project.</h2>
-	<section class="my-4">
+	<article class="my-4">
 		<p class="text-sm text-secondary-text">
-			<a class="font-semibold" href="/login">Login</a>
+			<a class="font-semibold text-main-accent" href="/login">Login</a>
 			to see your personal dashboard.
 		</p>
-	</section>
-	<button class="cta_bttn" type="button">Read our docs</a>
+	</article>
+	<article class="flex flex-col items-center gap-4">
+		<button class="cta_bttn" type="button">
+			Read our docs
+		</button>
+		<Table client:visible/>
+	</article>
 </section>
 
 

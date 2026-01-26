@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Table from '../components/Table.tsx';
 
 const token = Astro.cookies.get("auth")?.value;
-console.log("Dashboard token:", token ? "Present" : "Not present");
 
 if (!token) {
   return Astro.redirect("/login");

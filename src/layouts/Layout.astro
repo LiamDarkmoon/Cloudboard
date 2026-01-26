@@ -1,5 +1,4 @@
 ---
-const prerender = false;
 import '../styles/global.css'
 import Footer from "../components/Footer.astro";
 import HeaderNav from "../components/HeaderNav.astro";
@@ -21,7 +20,7 @@ import Main from "./Main.astro";
 		<HeaderNav/>
 		<SideBar/>
 		<Main>
-			<slot />
+			<slot/>
 		</Main>
 		<Footer/>
 	</body>
@@ -48,6 +47,15 @@ import Main from "./Main.astro";
 	.cta_bttn:active {
 		transform: scale(0.9)
 	}
+
+	.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge viejo */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari */
+}
 
 </style>
 

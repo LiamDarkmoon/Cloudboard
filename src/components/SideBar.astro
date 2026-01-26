@@ -1,4 +1,8 @@
-<aside>
+---
+const 
+---
+
+<aside class='hidden sm:block'>
   <nav>
     <ul>
       <li><a href="/dashboard">Dashoard</a></li>
@@ -27,21 +31,16 @@
     gap: 8px;
   }
 
-  nav ul li {
+  nav ul li a {
+    display: block;
     padding: 6px;
     border-radius: 3px;
     border-bottom: 1px solid var(--main-divider-color);
   }
 
-  nav ul li:hover {
+  nav ul li a:hover {
     border-bottom: var(--main-accent-color-hover) 1px solid;
     color: var(--main-accent-color-hover);
     cursor: pointer;
-  }
-
-  @media (max-width: 680px) {
-    aside {
-      display: none;
-    }
   }
 </style>

@@ -1,12 +1,26 @@
 ---
-import { actions } from "astro:actions";
+import LoginButton from "../components/LoginButton.tsx";
 
-const token = Astro.cookies.get("auth")?.value;
-console.log("HeaderNav token:", token ? "Present" : "Not present");
+const token = Boolean(Astro.cookies.get("auth")?.value);
 ---
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector("aside");
+    const navbar = document.querySelector("header nav ul");
+    const menuIcon = document.getElementById("toggler");
+
+    if (!menuIcon || !sidebar || !navbar) return;
+
+    menuIcon.addEventListener("click", () => {
+      sidebar.classList.toggle("hidden");
+      navbar.classList.toggle("hidden");
+    });
+  });
+</script>
+
 <header>
-  <nav class="sm:px-6">
+  <nav class="sm:px-6 px-2">
     <div class="flex flex-col justify-center items-center">
       <a class="text-main-text decoration-0 text-3xl font-black transition-all duration-300 hover:scale-110 hover:text-main-accent-active"
       href="/">
@@ -16,21 +30,17 @@ console.log("HeaderNav token:", token ? "Present" : "Not present");
         For UX analitycs
       </span>
     </div>
-    <ul>
-      <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active hidden md:block"><a href="/docs">Docs</a></li>
-      <form action={token ? actions.logout : null} method="POST">
-        <input type="hidden" name="logout" value="/" />
-        <button class="cta_bttn transition-all duration-300" type="submit">
-          <a href={token ? "/" : "/login"}>
-            {token ? 
-              "Logout" : 
-              "Login"
-            }
-          </a>
-        </button>
-      </form>
-    </nav>
-    </ul>
+    <div>
+      <ul class="sm:flex hidden">
+        <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active"><a href="/docs">Docs</a></li>
+        <LoginButton isLogedIn={token} client:load/>
+      </ul>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="size-8 mx-2 sm:hidden block cursor-pointer transition-all duration-300 hover:scale-110 hover:text-main-accent-active" id="toggler">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </div>
+  </nav>
+
 </header>
 
 <style>
@@ -54,7 +64,7 @@ console.log("HeaderNav token:", token ? "Present" : "Not present");
   }
 
   nav ul {
-    display: flex;
+    
     align-items: center;
     list-style: none;
     gap: 16px;

@@ -49,19 +49,15 @@ export const server = {
         path: "/",
       });
 
-      console.log("User token received:");
-      navigate("/dashboard");
-
       return { success: true };
     },
   }),
 
   logout: defineAction({
-    accept: "form",
-    handler: async (formData, { cookies }) => {
-      console.log(formData);
+    input: z.string().optional(),
+    handler: async (_, { cookies }) => {
       cookies.delete("auth", { path: "/" });
-      
+
       return { success: true };
     },
   }),

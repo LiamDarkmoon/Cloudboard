@@ -1,4 +1,4 @@
-<main>
+<main class="hide-scrollbar">
   <slot/>
 </main>
 
@@ -9,6 +9,7 @@
 		grid-row: 2 / 3;
 		display: flex;
 		justify-content: center;
+		overflow-y: scroll;
 	}
 	@media (max-width: 680px) {
     main {
