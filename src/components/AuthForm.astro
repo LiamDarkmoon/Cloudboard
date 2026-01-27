@@ -1,5 +1,6 @@
 ---
 import { actions } from 'astro:actions';
+import Button from './Button.tsx';
 ---
 
 <form method="POST" action={actions.login} class='w-3/4 md:w-1/2 lg:w-1/3'>
@@ -11,7 +12,7 @@ import { actions } from 'astro:actions';
     <label for="password">Password</label>
     <input type="password" name="password" id="password" placeholder="Enter your password" required/>
   </div>
-  <button class="cta_bttn" type="submit">Submit</button>
+  <Button client:visible>Submit</Button>
   <a href="/register" class="text-center ">
     ¿No tienes cuenta? ¡registrate aqui!
   </a>

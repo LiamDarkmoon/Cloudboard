@@ -7,7 +7,7 @@ const token = Boolean(Astro.cookies.get("auth")?.value);
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.querySelector("aside");
-    const navbar = document.querySelector("header nav ul");
+    const navbar = document.getElementById("dropdown-menu");
     const menuIcon = document.getElementById("toggler");
 
     if (!menuIcon || !sidebar || !navbar) return;
@@ -15,6 +15,7 @@ const token = Boolean(Astro.cookies.get("auth")?.value);
     menuIcon.addEventListener("click", () => {
       sidebar.classList.toggle("hidden");
       navbar.classList.toggle("hidden");
+      navbar.classList.add("flex");
     });
   });
 </script>
@@ -30,9 +31,9 @@ const token = Boolean(Astro.cookies.get("auth")?.value);
         For UX analitycs
       </span>
     </div>
-    <div>
-      <ul class="sm:flex hidden">
-        <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active"><a href="/docs">Docs</a></li>
+    <div class="flex items-center">
+      <ul class="sm:flex hidden" id='dropdown-menu'>
+        <!-- <li class="transition-all duration-300 hover:scale-110 hover:text-main-accent-active"><a href="/docs">Docs</a></li> -->
         <LoginButton isLogedIn={token} client:load/>
       </ul>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width={1.5} stroke="currentColor" class="size-8 mx-2 sm:hidden block cursor-pointer transition-all duration-300 hover:scale-110 hover:text-main-accent-active" id="toggler">
@@ -46,7 +47,7 @@ const token = Boolean(Astro.cookies.get("auth")?.value);
 <style>
   header {
     display: flex;
-    grid-column: 1 / -1 ;
+    grid-column: 1 / -1;
     grid-row: 1;
     border: 1px solid #2A2F35;
     border-radius: 15px;

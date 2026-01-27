@@ -1,8 +1,35 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Table from '../components/Table.tsx';
+import { eventsUrl, latestUrl } from '../lib/cons.ts';
+import type { EventData } from '../lib/types.ts';
 
 const token = Astro.cookies.get("auth")?.value;
+
+let events: EventData = [];
+
+try {
+  const res = await fetch(token ? eventsUrl : latestUrl, {
+    headers: token
+      ? { Authorization: `Bearer ${token}` }
+      : undefined,
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error ${res.status}`);
+  }
+
+  const data = await res.json();
+
+  const normalized: EventData = Array.isArray(data) ? data : [data];
+  events = normalized.length > 1
+    ? normalized.slice().reverse()
+    : normalized;
+
+} catch (error) {
+  console.error(error);
+  events = [];
+}
 
 if (!token) {
   return Astro.redirect("/login");
@@ -15,7 +42,7 @@ if (!token) {
     <h1 class="text-3xl font-extrabold">¡Your board!</h1>
     <p class="italic text-secondary-text">Check the metrics of your websites</p>
 
-    <Table client:visible token={token}/>
+    <Table client:visible token={token} events={events}/>
 
   </section>
 </Layout>

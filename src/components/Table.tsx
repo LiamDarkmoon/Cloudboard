@@ -1,32 +1,20 @@
 import { useEffect, useState } from "react";
+import type { EventData } from "../lib/types.ts";
+import { latestUrl, eventsUrl } from "../lib/cons.ts";
+import useWidth from "../lib/hooks/useWidth.tsx";
 
-export default function Table({ token }: { token?: string }) {
-  type Event = {
-    id: number;
-    element: string;
-    event_type: string;
-    created_at: Date;
-    time_spent: number;
-    updated_at: Date;
-    domain: string;
-    pathname: string;
-    referrer: string;
-    user_agent: string;
-    screen_width: number;
-    screen_height: number;
-    session_id: string;
-    user_id: number;
-    domain_id: number;
-  };
-  type EventData = Event[];
-
+export default function Table({
+  token,
+  events,
+}: {
+  token?: string;
+  events: EventData;
+}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [events, setEvents] = useState<EventData>([]);
-  const latestUrl = "https://cloudapi-chi.vercel.app/events/event/latest";
-  const eventsUrl = "https://cloudapi-chi.vercel.app/events/";
+  const [data, setData] = useState<EventData>(events);
+  const windowWidth = useWidth();
 
-  useEffect(() => {
-    let eData: EventData = [];
+  /* useEffect(() => {
     fetch(token ? eventsUrl : latestUrl, {
       method: "GET",
       headers: {
@@ -53,7 +41,7 @@ export default function Table({ token }: { token?: string }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [token]);
+  }, [token]); */
 
   return (
     <table className="table-fixed min-h-14 w-full border-separate border-spacing-1 rounded-md border-main-divider">
@@ -71,14 +59,14 @@ export default function Table({ token }: { token?: string }) {
         </tr>
       </thead>
       <tbody>
-        {isLoading ? (
+        {!data ? (
           <tr>
-            <td colSpan={5} className="text-center">
+            <td colSpan={windowWidth > 640 ? 5 : 3} className="text-center">
               <b className="text-2xl italic">Loading...</b>
             </td>
           </tr>
         ) : (
-          events.map((event) => (
+          data.map((event) => (
             <tr key={event.id}>
               <td className="border border-main-divider px-2 py-1 rounded">
                 {event.domain}
@@ -93,7 +81,7 @@ export default function Table({ token }: { token?: string }) {
                 {event.event_type}
               </td>
               <td className="border border-main-divider px-2 py-1 rounded hidden sm:block">
-                {(event.time_spent / 1000).toFixed(2)} seconds
+                {(event.time_spent / 1000).toFixed(1)} sec
               </td>
             </tr>
           ))

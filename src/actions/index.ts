@@ -1,6 +1,5 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { navigate } from "astro/virtual-modules/transitions-router.js";
 
 const schema = z.object({
   username: z.string().email().min(1),
