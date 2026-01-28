@@ -44,16 +44,20 @@ export default function Table({
   }, [token]); */
 
   return (
-    <table className="table-fixed min-h-14 w-full border-separate border-spacing-1 rounded-md border-main-divider">
+    <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
       <thead>
-        <tr>
-          <th className="border border-main-divider rounded">Website</th>
-          <th className="border border-main-divider rounded hidden sm:block">
+        <tr className="min-h-12 bg-main-divider/50">
+          <th className="border border-main-divider rounded truncate">
+            Website
+          </th>
+          <th className="border border-main-divider rounded truncate hidden sm:block">
             Path
           </th>
-          <th className="border border-main-divider rounded">Element</th>
-          <th className="border border-main-divider rounded">Event</th>
-          <th className="border border-main-divider rounded hidden sm:block">
+          <th className="border border-main-divider rounded truncate">
+            Element
+          </th>
+          <th className="border border-main-divider rounded truncate">Event</th>
+          <th className="border border-main-divider rounded truncate hidden sm:block">
             Time spent
           </th>
         </tr>
@@ -67,20 +71,23 @@ export default function Table({
           </tr>
         ) : (
           data.map((event) => (
-            <tr key={event.id}>
-              <td className="border border-main-divider px-2 py-1 rounded">
+            <tr
+              key={event.id}
+              className="min-h-12 hover:bg-main-divider/30 hover:text-main-accent"
+            >
+              <td className="border border-main-divider px-2 py-1 rounded truncate">
                 {event.domain}
               </td>
-              <td className="border border-main-divider px-2 py-1 rounded hidden sm:block">
+              <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
                 {event.pathname}
               </td>
-              <td className="border border-main-divider px-2 py-1 rounded">
+              <td className="border border-main-divider px-2 py-1 rounded truncate">
                 {event.element}
               </td>
-              <td className="border border-main-divider px-2 py-1 rounded">
+              <td className="border border-main-divider px-2 py-1 rounded truncate">
                 {event.event_type}
               </td>
-              <td className="border border-main-divider px-2 py-1 rounded hidden sm:block">
+              <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
                 {(event.time_spent / 1000).toFixed(1)} sec
               </td>
             </tr>

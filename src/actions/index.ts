@@ -60,4 +60,49 @@ export const server = {
       return { success: true };
     },
   }),
+
+  register: defineAction({
+    accept: "form",
+
+    handler: async (formData, { cookies }) => {
+      const parsed = schema.parse({
+        username: formData.get("username"),
+        password: formData.get("password"),
+      });
+
+      const data = new FormData();
+      data.append("username", parsed.username);
+      data.append("password", parsed.password);
+
+      const res = await fetch("https://cloudapi-chi.vercel.app/auth/register", {
+        method: "POST",
+        body: data,
+      });
+
+      const text = await res.text();
+
+      if (!res.ok) {
+        return {
+          success: false,
+          error: "Register failed",
+        };
+      }
+
+      const resData = JSON.parse(text);
+      const { user_token } = resData;
+
+      if (!user_token) {
+        return { success: false };
+      }
+
+      cookies.set("auth", user_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+      });
+
+      return { success: true };
+    },
+  }),
 };

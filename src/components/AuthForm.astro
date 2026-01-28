@@ -1,26 +1,46 @@
 ---
 import { actions } from 'astro:actions';
 import Button from './Button.tsx';
----
 
-<form method="POST" action={actions.login} class='w-3/4 md:w-1/2 lg:w-1/3'>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" name="username" id="username" placeholder="youremail@domain.com" autofocus required/>
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" placeholder="Enter your password" required/>
-  </div>
-  <Button client:visible>Submit</Button>
-  <a href="/register" class="text-center ">
-    ¿No tienes cuenta? ¡registrate aqui!
-  </a>
-</form>
+const { pathname } = Astro.url
+const token = Astro.cookies.get("auth")?.value;
+---
+<div class='w-full flex flex-col items-center justify-cente py-5'>
+  {
+    token && pathname === '/login' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already logged in.</h2> :
+    token && pathname === '/register' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already registered.</h2>
+    :
+    <h2 class='text-lg text-secondary-text mb-4'>
+      Please {pathname === '/login' ? 'log in to your account' : 'register a new account to get started'}.
+    </h2>
+    <form method="POST" action={ pathname === '/login' ? actions.login : actions.register} class='w-3/4 md:w-1/2 lg:w-1/3'>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="username" id="username" placeholder="youremail@domain.com" autofocus required/>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password" required/>
+      </div>
+      <Button client:visible>{  pathname === '/login' ? 'Log in' : 'Register'}</Button>
+      {
+        pathname === '/login' ? (
+          <a href="/register" class="text-center">
+            ¿No tienes cuenta? ¡registrate aqui!
+          </a>
+        ) : (
+          <a href="/login" class="text-center">
+            ¿Ya tienes cuenta? ¡Inicia sesión aqui!
+          </a>
+        )
+      }
+    </form>
+  }
+</div>
 
 <style>
   form {
-    padding-top: 32px;
+    padding-block: 16px;
     height: 100%;
     display: flex;
     flex-direction: column;

@@ -1,12 +1,13 @@
 ---
+const { id } = Astro.params;
 ---
 
-<aside class='hidden sm:block w-full bg-main-bg md z-10'>
+<aside class='hidden sm:block w-full text-center sm:text-start bg-main-bg z-10'>
   <nav>
     <ul>
       <li><a href="/dashboard">Dashoard</a></li>
-      <li><a href="/profile{id}">Profile</a></li>
-      <li><a href="/analytics">Analytics</a></li>
+      <li><a href="/profile/4242564">Profile</a></li>
+      <li><a href="/analytics" aria-disabled="true" tabindex="-1" class='cursor-not-allowed opacity-50'>Analytics</a></li>
       <li><a href="/domains">Domains</a></li>
     </ul>
   </nav>
@@ -29,7 +30,7 @@
   }
   nav ul li a {
     display: block;
-    padding: 6px;
+    padding: 12px;
     border-radius: 3px;
     border-bottom: 1px solid var(--main-divider-color);
   }
@@ -37,5 +38,11 @@
     border-bottom: var(--main-accent-color-hover) 1px solid;
     color: var(--main-accent-color-hover);
     cursor: pointer;
+  }
+
+  @media (width >= 640px) {
+    nav ul li a {
+      padding: 8px;
+    }
   }
 </style>

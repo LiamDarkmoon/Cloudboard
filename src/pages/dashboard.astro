@@ -1,35 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Table from '../components/Table.tsx';
-import { eventsUrl, latestUrl } from '../lib/cons.ts';
-import type { EventData } from '../lib/types.ts';
+import { eventsUrl } from '../lib/cons.ts';
+import { getAllEvents } from '../lib/utils/fetch.ts';
 
 const token = Astro.cookies.get("auth")?.value;
 
-let events: EventData = [];
-
-try {
-  const res = await fetch(token ? eventsUrl : latestUrl, {
-    headers: token
-      ? { Authorization: `Bearer ${token}` }
-      : undefined,
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP error ${res.status}`);
-  }
-
-  const data = await res.json();
-
-  const normalized: EventData = Array.isArray(data) ? data : [data];
-  events = normalized.length > 1
-    ? normalized.slice().reverse()
-    : normalized;
-
-} catch (error) {
-  console.error(error);
-  events = [];
-}
+const events = await getAllEvents({url:eventsUrl, token});
 
 if (!token) {
   return Astro.redirect("/login");

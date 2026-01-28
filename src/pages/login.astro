@@ -3,8 +3,7 @@ import AuthForm from '../components/AuthForm.astro';
 import Layout from '../layouts/Layout.astro';
 
 if (Astro.request.method === "POST") {
-  
-  return Astro.redirect("/dashboard");
+  if (Astro.response.status === 200) return Astro.redirect("/dashboard");
 }
 ---
 

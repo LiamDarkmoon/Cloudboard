@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { id: undefined }}
+  ]
+}
+
+const { id } = Astro.params;
+---
+<Layout>
+  <section class="w-full h-full flex flex-col items-center justify-center text-center py-10">
+    <h1 class="text-4xl font-bold mb-6">{`${id}'s Profile Page`}</h1>
+    {
+      id ? (
+        <p class="text-lg text-secondary-text">Viewing profile for ID: <strong>{id}</strong></p>
+      ) : (
+        <p class="text-lg text-secondary-text">No specific profile ID provided.</p>
+      )
+    }
+  </section>
+</Layout>
