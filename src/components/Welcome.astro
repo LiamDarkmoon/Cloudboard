@@ -1,8 +1,8 @@
 ---
-import { getLastEvent } from "../lib/utils/fetch";
+import { getEvent } from "../lib/utils/fetch";
 import Table from "./Table";
 
-const events = await getLastEvent();
+const events = await getEvent();
 ---
 
 <section id="hero" class="p-2 md:p-4">

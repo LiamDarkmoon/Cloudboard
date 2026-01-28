@@ -1,7 +1,7 @@
 import type { EventData } from "../types";
-import { latestUrl, eventsUrl } from "../cons";
+import { latestUrl, eventsUrl, eventUrl } from "../cons";
 
-async function fetchEvent({ url, token }: { url: string; token?: string }) {
+async function fetchEvent(url: string, token?: string) {
   const res = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
@@ -15,9 +15,15 @@ async function fetchEvent({ url, token }: { url: string; token?: string }) {
   return data;
 }
 
-export async function getLastEvent() {
-  const data = await fetchEvent({ url: latestUrl });
-  return [data];
+export async function getEvent(id?: number, token?: string) {
+  if (!id) {
+    const data = await fetchEvent(latestUrl);
+    return [data];
+  } else {
+    const url = eventUrl + id.toString();
+    const data = await fetchEvent(url, token);
+    return data;
+  }
 }
 
 export async function getAllEvents({
@@ -30,14 +36,11 @@ export async function getAllEvents({
   let events: EventData = [];
 
   try {
-    const data = await fetchEvent({ url, token });
+    const data = await fetchEvent(url, token);
     const normalized: EventData = Array.isArray(data) ? data : [data];
     events = normalized.length > 1 ? normalized.slice().reverse() : normalized;
   } catch (error) {
-    console.error(error);
     events = [];
   }
-  console.log(events);
-
   return events;
 }

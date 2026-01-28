@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import type { EventData } from "../lib/types.ts";
-import { latestUrl, eventsUrl } from "../lib/cons.ts";
+import type { Evento, EventData } from "../lib/types.ts";
+import { latestUrl, eventsUrl, eventUrl } from "../lib/cons.ts";
 import useWidth from "../lib/hooks/useWidth.tsx";
+import { getEvent } from "../lib/utils/fetch.ts";
+import TableRow from "./TableRow";
 
 export default function Table({
   token,
@@ -12,36 +14,14 @@ export default function Table({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<EventData>(events);
+  const [pointedData, setPointedData] = useState<Evento>();
   const windowWidth = useWidth();
 
-  /* useEffect(() => {
-    fetch(token ? eventsUrl : latestUrl, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        const normalized: EventData = Array.isArray(data) ? data : [data];
-
-        const ordered =
-          normalized.length > 1 ? normalized.slice().reverse() : normalized;
-
-        setEvents(ordered);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [token]); */
+  const handleClick = async (id: number) => {
+    const event = await getEvent(id, token);
+    console.log("Fetched event data:", event);
+    setPointedData(event);
+  };
 
   return (
     <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
@@ -63,34 +43,17 @@ export default function Table({
         </tr>
       </thead>
       <tbody>
-        {!data ? (
+        {!data && !pointedData ? (
           <tr>
             <td colSpan={windowWidth > 640 ? 5 : 3} className="text-center">
               <b className="text-2xl italic">Loading...</b>
             </td>
           </tr>
+        ) : pointedData ? (
+          <TableRow event={pointedData} />
         ) : (
           data.map((event) => (
-            <tr
-              key={event.id}
-              className="min-h-12 hover:bg-main-divider/30 hover:text-main-accent"
-            >
-              <td className="border border-main-divider px-2 py-1 rounded truncate">
-                {event.domain}
-              </td>
-              <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
-                {event.pathname}
-              </td>
-              <td className="border border-main-divider px-2 py-1 rounded truncate">
-                {event.element}
-              </td>
-              <td className="border border-main-divider px-2 py-1 rounded truncate">
-                {event.event_type}
-              </td>
-              <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
-                {(event.time_spent / 1000).toFixed(1)} sec
-              </td>
-            </tr>
+            <TableRow key={event.id} event={event} onClick={handleClick} />
           ))
         )}
       </tbody>

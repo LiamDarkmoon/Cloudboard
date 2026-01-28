@@ -1,4 +1,4 @@
-export type Event = {
+export type Evento = {
   id: number;
   element: string;
   event_type: string;
@@ -16,4 +16,4 @@ export type Event = {
   domain_id: number;
 };
 
-export type EventData = Event[];
+export type EventData = Evento[];

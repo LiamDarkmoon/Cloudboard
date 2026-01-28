@@ -1,11 +1,7 @@
 import { navigate } from "astro:transitions/client";
 import { actions } from "astro:actions";
 
-export default async function LoginButton({
-  isLogedIn,
-}: {
-  isLogedIn: boolean;
-}) {
+export default function LoginButton({ isLogedIn }: { isLogedIn: boolean }) {
   const handleLogout = async () => {
     if (isLogedIn) {
       const result = (await actions.logout("")).data;
