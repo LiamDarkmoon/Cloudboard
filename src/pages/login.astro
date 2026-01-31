@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 if (Astro.request.method === "POST") {
   if (Astro.response.status === 200) return Astro.redirect("/dashboard");
 }
+if (Astro.cookies.get("auth")?.boolean) return Astro.redirect("/dashboard");
 ---
 
 <Layout>

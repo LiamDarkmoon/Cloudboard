@@ -5,17 +5,17 @@ import Button from './Button.tsx';
 const { pathname } = Astro.url
 const token = Astro.cookies.get("auth")?.value;
 ---
-<div class='w-full flex flex-col items-center justify-cente py-5'>
+<div class='w-full flex flex-col items-center justify-cente py-6 sm:py-2'>
   {
     token && pathname === '/login' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already logged in.</h2> :
     token && pathname === '/register' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already registered.</h2>
     :
-    <h2 class='text-lg text-secondary-text mb-4'>
-      Please {pathname === '/login' ? 'log in to your account' : 'register a new account to get started'}.
+    <h2 class='font-bold text-2xl'>
+      {pathname === '/login' ? 'Log in to your account' : 'Register to get started'}
     </h2>
     <form method="POST" action={ pathname === '/login' ? actions.login : actions.register} class='w-3/4 md:w-1/2 lg:w-1/3'>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="username">Email</label>
         <input type="email" name="username" id="username" placeholder="youremail@domain.com" autofocus required/>
       </div>
       <div class="form-group">
@@ -26,11 +26,11 @@ const token = Astro.cookies.get("auth")?.value;
       {
         pathname === '/login' ? (
           <a href="/register" class="text-center">
-            ¿No tienes cuenta? ¡registrate aqui!
+            o ¡registrate aqui!
           </a>
         ) : (
           <a href="/login" class="text-center">
-            ¿Ya tienes cuenta? ¡Inicia sesión aqui!
+            o ¡inicia sesión aqui!
           </a>
         )
       }
@@ -54,7 +54,7 @@ const token = Astro.cookies.get("auth")?.value;
   }
 
   label {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   input {

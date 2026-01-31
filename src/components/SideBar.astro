@@ -1,14 +1,28 @@
 ---
+import Icon from '../components/Icon'
 const { id } = Astro.params;
+
+const options = [
+{ id: "dashboard", label: "Dashboard", path: "/dashboard", icon: "dashboard" },
+{ id: "profile", label: "Profile", path: "/profile", icon: "profile" },
+{ id: "analytics", label: "Analytics", path: "/analytics", icon: "analytics" },
+{ id: "domains", label: "Domains", path: "/domains", icon: "domains" },
+]
 ---
 
 <aside class='hidden sm:block w-full text-center sm:text-start bg-main-bg z-10'>
   <nav>
     <ul>
-      <li><a href="/dashboard">Dashoard</a></li>
-      <li><a href="/profile/4242564">Profile</a></li>
-      <li><a href="/analytics" aria-disabled="true" tabindex="-1" class='cursor-not-allowed opacity-50'>Analytics</a></li>
-      <li><a href="/domains">Domains</a></li>
+      {
+        options.map((option) => (
+          <li>
+            <a href={option.path} class=>
+              <Icon name={option.icon} />
+              <span>{option.label}</span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </aside>
@@ -29,12 +43,13 @@ const { id } = Astro.params;
     gap: 8px;
   }
   nav ul li a {
-    display: block;
+    display: flex;
+    gap: 16px;
     padding: 12px;
     border-radius: 3px;
     border-bottom: 1px solid var(--main-divider-color);
   }
-  nav ul li a:hover {
+  nav ul li a:hover{
     border-bottom: var(--main-accent-color-hover) 1px solid;
     color: var(--main-accent-color-hover);
     cursor: pointer;

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import type { Evento } from "../lib/types";
+import { getTime } from "../lib/utils/utils";
 
 export default function TableRow({
   event,
@@ -8,6 +9,8 @@ export default function TableRow({
   event: Evento;
   onClick?: (id: number) => void;
 }) {
+  const time = getTime(event.created_at);
+
   return (
     <tr
       key={event.id}
@@ -30,7 +33,7 @@ export default function TableRow({
         {event.event_type}
       </td>
       <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
-        {(event.time_spent / 1000).toFixed(1)} sec
+        {time}
       </td>
     </tr>
   );

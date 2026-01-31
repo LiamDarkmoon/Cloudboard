@@ -30,18 +30,25 @@ export const server = {
       if (!res.ok) {
         return {
           success: false,
-          error: "Login failed",
+          error: "login failed",
+          status: res.status,
         };
       }
 
       const resData = JSON.parse(text);
-      const { user_token } = resData;
+      const { user_token, user } = resData;
 
       if (!user_token) {
         return { success: false };
       }
 
       cookies.set("auth", user_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+      });
+      cookies.set("user", user.email, {
         httpOnly: true,
         secure: true,
         sameSite: "lax",
@@ -85,17 +92,24 @@ export const server = {
         return {
           success: false,
           error: "Register failed",
+          status: res.status,
         };
       }
 
       const resData = JSON.parse(text);
-      const { user_token } = resData;
+      const { user_token, user } = resData;
 
       if (!user_token) {
         return { success: false };
       }
 
       cookies.set("auth", user_token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+      });
+      cookies.set("user", user.email, {
         httpOnly: true,
         secure: true,
         sameSite: "lax",

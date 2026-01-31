@@ -4,6 +4,7 @@ import { latestUrl, eventsUrl, eventUrl } from "../lib/cons.ts";
 import useWidth from "../lib/hooks/useWidth.tsx";
 import { getEvent } from "../lib/utils/fetch.ts";
 import TableRow from "./TableRow";
+import Card from "./Card.tsx";
 
 export default function Table({
   token,
@@ -19,7 +20,7 @@ export default function Table({
 
   const handleClick = async (id: number) => {
     const event = await getEvent(id, token);
-    console.log("Fetched event data:", event);
+
     setPointedData(event);
   };
 
@@ -38,7 +39,7 @@ export default function Table({
           </th>
           <th className="border border-main-divider rounded truncate">Event</th>
           <th className="border border-main-divider rounded truncate hidden sm:block">
-            Time spent
+            Date
           </th>
         </tr>
       </thead>
@@ -50,7 +51,7 @@ export default function Table({
             </td>
           </tr>
         ) : pointedData ? (
-          <TableRow event={pointedData} />
+          <Card event={pointedData} />
         ) : (
           data.map((event) => (
             <TableRow key={event.id} event={event} onClick={handleClick} />

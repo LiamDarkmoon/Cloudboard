@@ -1,13 +1,13 @@
 import type { EventData } from "../types";
 import { latestUrl, eventsUrl, eventUrl } from "../cons";
 
-async function fetchEvent(url: string, token?: string) {
+async function fetchEvent(url: string = eventsUrl, token?: string) {
   const res = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
 
   if (!res.ok) {
-    throw new Error(`HTTP error ${res.status}`);
+    throw new Error(`HTTP Error ${res.status}`);
   }
 
   const data = await res.json();
@@ -26,19 +26,13 @@ export async function getEvent(id?: number, token?: string) {
   }
 }
 
-export async function getAllEvents({
-  url,
-  token,
-}: {
-  url: string;
-  token?: string;
-}) {
+export async function getAllEvents(token?: string) {
   let events: EventData = [];
 
   try {
-    const data = await fetchEvent(url, token);
-    const normalized: EventData = Array.isArray(data) ? data : [data];
-    events = normalized.length > 1 ? normalized.slice().reverse() : normalized;
+    const data = await fetchEvent(eventsUrl, token);
+
+    events = [data];
   } catch (error) {
     events = [];
   }

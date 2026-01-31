@@ -3,6 +3,7 @@ import '../styles/global.css'
 import Footer from "../components/Footer.astro";
 import HeaderNav from "../components/HeaderNav.astro";
 import SideBar from "../components/SideBar.astro";
+import IconSprite from "../assets/icons";
 import Main from "./Main.astro";
 ---
 
@@ -17,6 +18,7 @@ import Main from "./Main.astro";
 		<script src="https://cloudapi-chi.vercel.app/tracker.js?v=1" defer></script>
 	</head>
 	<body class="layout">
+		<IconSprite client:load/>
 		<HeaderNav/>
 		<SideBar/>
 		<Main>
@@ -31,7 +33,7 @@ import Main from "./Main.astro";
 		background-color: var(--main-accent-color);
 		color: var(--main-bg-color);
     border: none;
-    padding: 16px 32px;
+    padding: 12px 24px;
     text-align: center;
     display: inline-block;
     margin: 4px 2px;
@@ -75,6 +77,7 @@ import Main from "./Main.astro";
 	}
 	html,
 	body {
+		position: relative;
 		box-sizing: border-box;
 		margin: 0;
 		width: 100%;

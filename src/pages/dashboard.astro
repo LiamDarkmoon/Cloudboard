@@ -1,12 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Table from '../components/Table.tsx';
-import { eventsUrl } from '../lib/cons.ts';
 import { getAllEvents } from '../lib/utils/fetch.ts';
 
 const token = Astro.cookies.get("auth")?.value;
+const user = Astro.cookies.get("user")?.value;
 
-const events = await getAllEvents({url:eventsUrl, token});
+const events = await getAllEvents(token);
 
 if (!token) {
   return Astro.redirect("/login");
@@ -16,7 +16,7 @@ if (!token) {
 <Layout>
   <section class="pt-3 sm:p-0">
 
-    <h1 class="text-3xl font-extrabold">¡Your board!</h1>
+    <h1 class="text-3xl font-extrabold">¡your board!</h1>
     <p class="italic text-secondary-text">Check the metrics of your websites</p>
 
     <Table client:visible token={token} events={events}/>
