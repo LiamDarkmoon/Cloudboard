@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Evento, EventData } from "../lib/types.ts";
 import { latestUrl, eventsUrl, eventUrl } from "../lib/cons.ts";
 import useWidth from "../lib/hooks/useWidth.tsx";
-import { getEvent } from "../lib/utils/fetch.ts";
+import { getAllEvents, getEvent } from "../lib/utils/fetch.ts";
 import TableRow from "./TableRow";
 import Card from "./Card.tsx";
 
@@ -15,8 +15,12 @@ export default function Table({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<EventData>(events);
-  const [pointedData, setPointedData] = useState<Evento>();
+  const [pointedData, setPointedData] = useState<Evento>(events[0]);
   const windowWidth = useWidth();
+
+  useEffect(() => {
+    const newData = getAllEvents(token);
+  }, [data]);
 
   const handleClick = async (id: number) => {
     const event = await getEvent(id, token);
@@ -25,39 +29,42 @@ export default function Table({
   };
 
   return (
-    <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
-      <thead>
-        <tr className="min-h-12 bg-main-divider/50">
-          <th className="border border-main-divider rounded truncate">
-            Website
-          </th>
-          <th className="border border-main-divider rounded truncate hidden sm:block">
-            Path
-          </th>
-          <th className="border border-main-divider rounded truncate">
-            Element
-          </th>
-          <th className="border border-main-divider rounded truncate">Event</th>
-          <th className="border border-main-divider rounded truncate hidden sm:block">
-            Date
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {!data && !pointedData ? (
-          <tr>
-            <td colSpan={windowWidth > 640 ? 5 : 3} className="text-center">
-              <b className="text-2xl italic">Loading...</b>
-            </td>
+    <>
+      <Card event={pointedData} />
+      <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
+        <thead>
+          <tr className="min-h-12 bg-main-divider/50">
+            <th className="border border-main-divider rounded truncate">
+              Website
+            </th>
+            <th className="border border-main-divider rounded truncate hidden sm:block">
+              Path
+            </th>
+            <th className="border border-main-divider rounded truncate">
+              Element
+            </th>
+            <th className="border border-main-divider rounded truncate">
+              Event
+            </th>
+            <th className="border border-main-divider rounded truncate hidden sm:block">
+              Date
+            </th>
           </tr>
-        ) : pointedData ? (
-          <Card event={pointedData} />
-        ) : (
-          data.map((event) => (
-            <TableRow key={event.id} event={event} onClick={handleClick} />
-          ))
-        )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {!data ? (
+            <tr>
+              <td colSpan={windowWidth > 640 ? 5 : 3} className="text-center">
+                <b className="text-2xl italic">Loading...</b>
+              </td>
+            </tr>
+          ) : (
+            data.map((event) => (
+              <TableRow key={event.id} event={event} onClick={handleClick} />
+            ))
+          )}
+        </tbody>
+      </table>
+    </>
   );
 }

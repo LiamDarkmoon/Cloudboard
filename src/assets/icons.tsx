@@ -38,7 +38,7 @@ export default function IconsSprite() {
         />
       </symbol>
 
-      <symbol id="icon-delete" viewBox="0 0 24 24">
+      <symbol id="icon-trash" viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"

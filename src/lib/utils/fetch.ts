@@ -31,10 +31,22 @@ export async function getAllEvents(token?: string) {
 
   try {
     const data = await fetchEvent(eventsUrl, token);
-
-    events = [data];
+    events = data;
   } catch (error) {
     events = [];
   }
   return events;
+}
+
+export async function deleteEvent(id: number, token?: string) {
+  const res = await fetch(eventUrl + id.toString(), {
+    method: "DElETE",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP Error ${res.status}`);
+  }
+
+  console.log("Event", id, "deleted");
 }
