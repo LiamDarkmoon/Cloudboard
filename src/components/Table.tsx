@@ -14,23 +14,35 @@ export default function Table({
   events: EventData;
 }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [version, setVersion] = useState(0);
   const [data, setData] = useState<EventData>(events);
-  const [pointedData, setPointedData] = useState<Evento>(events[0]);
-  const windowWidth = useWidth();
+  const [pointedData, setPointedData] = useState<Evento>();
 
   useEffect(() => {
-    const newData = getAllEvents(token);
-  }, [data]);
+    if (version > 0) {
+      const updateData = async () => {
+        const newData = await getAllEvents(token);
+        setData(newData);
+      };
+      updateData();
+    }
+  }, [version]);
 
   const handleClick = async (id: number) => {
     const event = await getEvent(id, token);
-
     setPointedData(event);
   };
 
   return (
     <>
-      <Card event={pointedData} />
+      {pointedData ? (
+        <Card
+          event={pointedData}
+          token={token}
+          state={setVersion}
+          onClose={() => setPointedData(undefined)}
+        />
+      ) : null}
       <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
         <thead>
           <tr className="min-h-12 bg-main-divider/50">
@@ -46,15 +58,13 @@ export default function Table({
             <th className="border border-main-divider rounded truncate">
               Event
             </th>
-            <th className="border border-main-divider rounded truncate hidden sm:block">
-              Date
-            </th>
+            <th className="border border-main-divider rounded truncate">Id</th>
           </tr>
         </thead>
         <tbody>
-          {!data ? (
+          {!data && isLoading ? (
             <tr>
-              <td colSpan={windowWidth > 640 ? 5 : 3} className="text-center">
+              <td className="text-center">
                 <b className="text-2xl italic">Loading...</b>
               </td>
             </tr>

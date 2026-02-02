@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import type { Evento } from "../lib/types";
 import { getTime } from "../lib/utils/utils";
 
@@ -28,8 +28,8 @@ export default function TableRow({
       <td className="border border-main-divider px-2 py-1 rounded truncate">
         {event.event_type}
       </td>
-      <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
-        {time}
+      <td className="border border-main-divider px-2 py-1 rounded truncate">
+        {event.id}
       </td>
     </tr>
   );

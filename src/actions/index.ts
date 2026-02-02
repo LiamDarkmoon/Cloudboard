@@ -1,5 +1,7 @@
 import { defineAction } from "astro:actions";
+import { latestUrl, eventsUrl, eventUrl } from "../lib/cons";
 import { z } from "astro/zod";
+import { number } from "zod";
 
 const schema = z.object({
   username: z.string().email().min(1),
@@ -48,7 +50,7 @@ export const server = {
         sameSite: "lax",
         path: "/",
       });
-      cookies.set("user", user.email, {
+      cookies.set("user_id", user.id, {
         httpOnly: true,
         secure: true,
         sameSite: "lax",
@@ -109,12 +111,30 @@ export const server = {
         sameSite: "lax",
         path: "/",
       });
-      cookies.set("user", user.email, {
+      cookies.set("user_id", user.id, {
         httpOnly: true,
         secure: true,
         sameSite: "lax",
         path: "/",
       });
+
+      return { success: true };
+    },
+  }),
+
+  deleteEvent: defineAction({
+    input: z.number(),
+    handler: async (id, { cookies }) => {
+      const res = await fetch(eventUrl + id, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${cookies.get("auth")?.value}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP Error ${res.status}`);
+      }
 
       return { success: true };
     },
