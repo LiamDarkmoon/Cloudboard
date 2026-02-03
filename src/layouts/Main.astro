@@ -1,16 +1,14 @@
-<main class="hide-scrollbar col-start-1 -col-end-1 sm:col-start-2 ">
+<main class="col-start-1 -col-end-1 sm:col-start-2">
   <slot/>
 </main>
 
 <style>
   main {
-		height: 100%;
+		max-height: 80vh;
 		min-height: 214px;
-		
 		grid-row: 2 / 3;
 		display: flex;
 		justify-content: center;
-		overflow-y: scroll;
 	}
 	
 </style>

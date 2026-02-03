@@ -1,7 +1,7 @@
-import type { EventData } from "../types";
+import type { EventData, Evento } from "../types";
 import { latestUrl, eventsUrl, eventUrl } from "../cons";
 
-async function fetchEvent(url: string = eventsUrl, token?: string) {
+async function fetchEvent(url: string = latestUrl, token?: string) {
   const res = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
@@ -10,15 +10,13 @@ async function fetchEvent(url: string = eventsUrl, token?: string) {
     throw new Error(`HTTP Error ${res.status}`);
   }
 
-  const data = await res.json();
-
-  return data;
+  return await res.json();
 }
 
-export async function getEvent(id?: number, token?: string) {
+export async function getEvent(id?: number, token?: string): Promise<Evento> {
   if (!id) {
-    const data = await fetchEvent(latestUrl);
-    return [data];
+    const data = await fetchEvent();
+    return data;
   } else {
     const url = eventUrl + id.toString();
     const data = await fetchEvent(url, token);

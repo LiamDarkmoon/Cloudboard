@@ -33,7 +33,9 @@ import Main from "./Main.astro";
 		background-color: var(--main-accent-color);
 		color: var(--main-bg-color);
     border: none;
-    padding: 12px 24px;
+		height: 48px;
+    font-size: 16px;
+		padding: 12px 24px;
     text-align: center;
     display: inline-block;
     cursor: pointer;
@@ -50,13 +52,22 @@ import Main from "./Main.astro";
 	}
 
 	.hide-scrollbar {
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE / Edge viejo */
-}
+  	scrollbar-width: none;        /* Firefox */
+  	-ms-overflow-style: none;     /* IE / Edge viejo */
+	}
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;                /* Chrome / Safari */
-}
+	.hide-scrollbar::-webkit-scrollbar {
+  	display: none;                /* Chrome / Safari */
+	}
+
+	@media (width <= 640px) {
+		.cta_bttn {
+			height: 32px;
+			font-size: 14px;
+			padding: 6px 12px;
+			border-radius: 6px;
+		}
+	}
 
 </style>
 
@@ -96,6 +107,7 @@ import Main from "./Main.astro";
 	@media (width <= 640px) {
 		.layout {
 			grid-template-columns: 1fr;
+			grid-template-rows: 56px 1fr 100px;
+		}
 	}
-}
 </style>

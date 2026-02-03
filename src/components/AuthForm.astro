@@ -5,7 +5,7 @@ import Button from './Button.tsx';
 const { pathname } = Astro.url
 const token = Astro.cookies.get("auth")?.value;
 ---
-<div class='w-full flex flex-col items-center justify-cente py-6 sm:py-2'>
+<div class='h-full w-full flex flex-col items-center justify-cente py-6 sm:py-2'>
   {
     token && pathname === '/login' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already logged in.</h2> :
     token && pathname === '/register' ? <h2 class='text-3xl font-bold text-main-accent mb-4'>You are already registered.</h2>
@@ -44,6 +44,7 @@ const token = Astro.cookies.get("auth")?.value;
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1.5rem;
   }
 

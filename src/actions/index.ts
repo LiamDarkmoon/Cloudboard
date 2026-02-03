@@ -1,7 +1,7 @@
 import { defineAction } from "astro:actions";
 import { latestUrl, eventsUrl, eventUrl } from "../lib/cons";
 import { z } from "astro/zod";
-import { number } from "zod";
+import { getAllEvents, getEvent } from "../lib/utils/fetch";
 
 const schema = z.object({
   username: z.string().email().min(1),
@@ -137,6 +137,24 @@ export const server = {
       }
 
       return { success: true };
+    },
+  }),
+
+  fetchEvent: defineAction({
+    handler: async (id, { cookies }) => {
+      const token = cookies.get("auth")?.value;
+
+      if (token) if (id) return await getEvent(id, token);
+
+      return await getEvent();
+    },
+  }),
+
+  fetchEvents: defineAction({
+    handler: async (id, { cookies }) => {
+      const token = cookies.get("auth")?.value;
+
+      return await getAllEvents(token);
     },
   }),
 };

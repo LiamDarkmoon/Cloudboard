@@ -17,3 +17,5 @@ export type Evento = {
 };
 
 export type EventData = Evento[];
+
+export type Result<T> = T;

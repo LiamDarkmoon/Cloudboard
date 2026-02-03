@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Evento } from "../lib/types";
-import { getTime } from "../lib/utils/utils";
+import Icon from "../components/Icon";
 
 export default function TableRow({
   event,
@@ -9,12 +9,15 @@ export default function TableRow({
   event: Evento;
   onClick?: (id: number) => void;
 }) {
-  const time = event ? getTime(event.created_at) : 0;
+  const [hover, setHover] = useState(false);
 
   return (
     <tr
+      id={event.id.toString()}
       className="min-h-12 hover:bg-main-divider/30 hover:text-main-accent cursor-pointer"
       onClick={() => onClick && onClick(event.id)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <td className="border border-main-divider px-2 py-1 rounded truncate">
         {event.domain}
@@ -23,12 +26,13 @@ export default function TableRow({
         {event.pathname}
       </td>
       <td className="border border-main-divider px-2 py-1 rounded truncate">
-        {event.element}
-      </td>
-      <td className="border border-main-divider px-2 py-1 rounded truncate">
         {event.event_type}
       </td>
-      <td className="border border-main-divider px-2 py-1 rounded truncate">
+      <td className="border border-main-divider px-2 py-1 rounded truncate hidden sm:block">
+        {event.element}
+      </td>
+      <td className="border border-main-divider px-2 py-1 rounded truncate text-end">
+        {hover && <Icon name="eye" className="float-start" />}
         {event.id}
       </td>
     </tr>

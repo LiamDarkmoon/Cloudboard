@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import type { Evento, EventData } from "../lib/types.ts";
-import { latestUrl, eventsUrl, eventUrl } from "../lib/cons.ts";
-import useWidth from "../lib/hooks/useWidth.tsx";
-import { getAllEvents, getEvent } from "../lib/utils/fetch.ts";
 import TableRow from "./TableRow";
 import Card from "./Card.tsx";
+import { actions } from "astro:actions";
 
 export default function Table({
   token,
@@ -13,28 +11,31 @@ export default function Table({
   token?: string;
   events: EventData;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
   const [version, setVersion] = useState(0);
   const [data, setData] = useState<EventData>(events);
   const [pointedData, setPointedData] = useState<Evento>();
 
   useEffect(() => {
+    const updateData = async () => {
+      const { data, error } = await actions.fetchEvents();
+      if (error) {
+        console.log(error);
+      } else setData(data);
+    };
     if (version > 0) {
-      const updateData = async () => {
-        const newData = await getAllEvents(token);
-        setData(newData);
-      };
       updateData();
     }
   }, [version]);
 
   const handleClick = async (id: number) => {
-    const event = await getEvent(id, token);
-    setPointedData(event);
+    const { data, error } = await actions.fetchEvent(id);
+    if (error) {
+      console.log(error);
+    } else setPointedData(data);
   };
 
   return (
-    <>
+    <div className="h-full overflow-scroll hide-scrollbar">
       {pointedData ? (
         <Card
           event={pointedData}
@@ -43,9 +44,10 @@ export default function Table({
           onClose={() => setPointedData(undefined)}
         />
       ) : null}
+
       <table className="table-fixed min-h-12 w-full border-separate border-spacing-1 rounded-md border-main-divider">
-        <thead>
-          <tr className="min-h-12 bg-main-divider/50">
+        <thead className="sticky top-0">
+          <tr className="min-h-12 bg-main-divider">
             <th className="border border-main-divider rounded truncate">
               Website
             </th>
@@ -53,28 +55,21 @@ export default function Table({
               Path
             </th>
             <th className="border border-main-divider rounded truncate">
-              Element
-            </th>
-            <th className="border border-main-divider rounded truncate">
               Event
+            </th>
+            <th className="border border-main-divider rounded truncate hidden sm:block">
+              Element
             </th>
             <th className="border border-main-divider rounded truncate">Id</th>
           </tr>
         </thead>
         <tbody>
-          {!data && isLoading ? (
-            <tr>
-              <td className="text-center">
-                <b className="text-2xl italic">Loading...</b>
-              </td>
-            </tr>
-          ) : (
+          {data &&
             data.map((event) => (
               <TableRow key={event.id} event={event} onClick={handleClick} />
-            ))
-          )}
+            ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 }
