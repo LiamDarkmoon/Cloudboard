@@ -22,7 +22,7 @@ export const server = {
       data.append("username", parsed.username);
       data.append("password", parsed.password);
 
-      const res = await fetch("https://cloudapi-chi.vercel.app/auth/login", {
+      const res = await fetch("https://api-cloudboard.vercel.app/auth/login", {
         method: "POST",
         body: data,
       });
@@ -38,19 +38,13 @@ export const server = {
       }
 
       const resData = JSON.parse(text);
-      const { user_token, user } = resData;
+      const { token } = resData;
 
-      if (!user_token) {
+      if (!token) {
         return { success: false };
       }
 
-      cookies.set("auth", user_token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        path: "/",
-      });
-      cookies.set("user_id", user.id, {
+      cookies.set("auth", token, {
         httpOnly: true,
         secure: true,
         sameSite: "lax",
@@ -83,10 +77,13 @@ export const server = {
       data.append("username", parsed.username);
       data.append("password", parsed.password);
 
-      const res = await fetch("https://cloudapi-chi.vercel.app/auth/register", {
-        method: "POST",
-        body: data,
-      });
+      const res = await fetch(
+        "https://api-cloudboard.vercel.app/auth/register",
+        {
+          method: "POST",
+          body: data,
+        },
+      );
 
       const text = await res.text();
 

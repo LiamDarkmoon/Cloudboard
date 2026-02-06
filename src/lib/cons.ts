@@ -1,3 +1,4 @@
-export const eventsUrl = "https://cloudapi-chi.vercel.app/events/";
-export const eventUrl = "https://cloudapi-chi.vercel.app/events/event/";
-export const latestUrl = "https://cloudapi-chi.vercel.app/events/event/latest";
+export const eventsUrl = "https://api-cloudboard.vercel.app/events/";
+export const eventUrl = "https://api-cloudboard.vercel.app/events/event/";
+export const latestUrl =
+  "https://api-cloudboard.vercel.app/events/event/latest";
